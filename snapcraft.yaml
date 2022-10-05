@@ -22,7 +22,7 @@ package-repositories:
 
     # ppa: oibaf/graphics-drivers
     url: http://ppa.launchpad.net/oibaf/graphics-drivers/ubuntu
-    suites: [focal]
+    suites: [jammy]
     components: [main]
     architectures: [amd64, i386]
     key-id: 5ABCE68FF4633EA42E219156957D2708A03A4626
