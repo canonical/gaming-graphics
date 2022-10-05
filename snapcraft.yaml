@@ -20,8 +20,8 @@ package-repositories:
     # for this PPA, but Snapcraft doesn't let us do that with the
     # short syntax. So use the full version instead.
 
-    # ppa: kisak/kisak-mesa
-    url: http://ppa.launchpad.net/kisak/kisak-mesa/ubuntu
+    # ppa: kisak/turtle
+    url: http://ppa.launchpad.net/kisak/turtle/ubuntu
     suites: [focal]
     components: [main]
     architectures: [amd64, i386]
