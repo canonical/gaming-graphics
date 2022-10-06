@@ -29,7 +29,17 @@ package-repositories:
     key-server: keyserver.ubuntu.com
   
 parts:
+  enable-i386:
+    plugin: nil
+    override-build: |
+      craftctl default
+      if [ "$CRAFT_ARCH_TRIPLET" = "x86_64-linux-gnu" ]; then
+        dpkg --add-architecture i386
+      fi
+      apt update
+
   debs:
+    after: [ enable-i386 ]
     plugin: nil
     stage-packages:
       - libvkd3d1:i386
