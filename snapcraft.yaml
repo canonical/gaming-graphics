@@ -9,12 +9,19 @@ base: core22
 compression: lzo
 
 slots:
-    gaming-mesa:
-      interface: content
-      read:
-        - /
+  gaming-mesa:
+    interface: content
+    read:
+      - /
 
 package-repositories:
+  - type: apt
+    url: http://archive.ubuntu.com/ubuntu/
+    suites: [jammy]
+    components: [main, universe]
+    architectures: [amd64, i386]
+    key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
+    key-server: keyserver.ubuntu.com
   - type: apt
     # FIXME: We need to enable both 32-bit and 64-bit architectures
     # for this PPA, but Snapcraft doesn't let us do that with the
@@ -27,19 +34,9 @@ package-repositories:
     architectures: [amd64, i386]
     key-id: 5ABCE68FF4633EA42E219156957D2708A03A4626
     key-server: keyserver.ubuntu.com
-  
-parts:
-  enable-i386:
-    plugin: nil
-    override-pull: |
-      craftctl default
-      if [ "$CRAFT_ARCH_TRIPLET" = "x86_64-linux-gnu" ]; then
-        dpkg --add-architecture i386
-      fi
-      apt update
 
+parts:
   debs:
-    after: [ enable-i386 ]
     plugin: nil
     stage-packages:
       - libvkd3d1:i386
@@ -69,4 +66,3 @@ parts:
       - -etc/X11
       - -etc/sensors3.conf
       - -usr/lib/*/gconv
-      - -usr/share/gcc
