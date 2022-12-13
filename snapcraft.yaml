@@ -39,6 +39,7 @@ parts:
   debs:
     plugin: nil
     stage-packages:
+      - libgl1-mesa-glx:i386
       - libvkd3d1:i386
       - libvkd3d1:amd64
       - mesa-va-drivers:amd64
@@ -53,6 +54,9 @@ parts:
       - libvdpau-va-gl1:amd64
       - vulkan-tools # For testing/debugging
       - mesa-utils # For testing/debugging
+      # Only needed in the kisak branches, oibaf picks these up from the PPA
+      - libxml2:i386
+      - libstdc++6
     stage:
       - -usr/share/doc
       - -usr/share/man
