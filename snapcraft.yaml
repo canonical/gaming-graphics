@@ -53,6 +53,8 @@ parts:
       - va-driver-all:i386
       - va-driver:i386
       - libvdpau-va-gl1:amd64
+      - libxml2:i386
+      - libxml2:amd64
       - vulkan-tools # For testing/debugging
       - mesa-utils # For testing/debugging
     stage:
