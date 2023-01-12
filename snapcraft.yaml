@@ -39,6 +39,8 @@ parts:
   debs:
     plugin: nil
     stage-packages:
+      - libgl1-mesa-glx:i386
+      - libgl1-mesa-glx:amd64
       - libgl1-mesa-dri:i386
       - libgl1-mesa-dri:amd64
       - libvkd3d1:i386
