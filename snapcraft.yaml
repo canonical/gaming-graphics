@@ -17,7 +17,7 @@ slots:
 package-repositories:
   - type: apt
     url: http://archive.ubuntu.com/ubuntu/
-    suites: [jammy]
+    suites: [jammy, jammy-updates]
     components: [main, universe]
     architectures: [amd64, i386]
     key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
