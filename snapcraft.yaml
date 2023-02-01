@@ -1,5 +1,5 @@
 name: gaming-graphics-core22
-version: git
+adopt-info: debs
 summary: Shared Mesa stack for gaming
 description: |
  This snap includes newer versions of Mesa optimized for gaming.
@@ -72,3 +72,7 @@ parts:
       - -etc/X11
       - -etc/sensors3.conf
       - -usr/lib/*/gconv
+    override-prime: |
+      craftctl default
+      # Set the snap version from the mesa package version
+      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog.gz -S Version | cut -c -32)
