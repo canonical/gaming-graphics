@@ -39,6 +39,8 @@ parts:
   debs:
     plugin: nil
     stage-packages:
+      - libdrm2:i386
+      - libdrm2:amd64
       - libgl1-mesa-glx:i386
       - libgl1-mesa-glx:amd64
       - libgl1-mesa-dri:i386
