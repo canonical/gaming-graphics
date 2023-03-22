@@ -57,6 +57,7 @@ parts:
       - libvdpau-va-gl1:amd64
       - libxml2:i386
       - libxml2:amd64
+      - libdrm-common
       - vulkan-tools # For testing/debugging
       - mesa-utils # For testing/debugging
     stage:
