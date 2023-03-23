@@ -57,6 +57,7 @@ parts:
       - va-driver-all:i386
       - va-driver:i386
       - libvdpau-va-gl1:amd64
+      - libdrm-common
       - vulkan-tools # For testing/debugging
       - mesa-utils # For testing/debugging
       # Only needed in the kisak branches, oibaf picks these up from the PPA
