@@ -22,6 +22,7 @@ package-repositories:
     architectures: [amd64, i386]
     key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
     key-server: keyserver.ubuntu.com
+
   - type: apt
     # FIXME: We need to enable both 32-bit and 64-bit architectures
     # for this PPA, but Snapcraft doesn't let us do that with the
@@ -81,3 +82,21 @@ parts:
       craftctl default
       # Set the snap version from the mesa package version
       craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog.gz -S Version | cut -c -32)
+
+  nvidia-vaapi:
+    after: [debs]
+    plugin: meson
+    source: https://github.com/elFarto/nvidia-vaapi-driver.git
+    build-environment: 
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/usr/lib/x86_64-linux-gnu/mesa-egl:$CRAFT_STAGE/usr/lib/x86_64-linux-gnu/mesa:$CRAFT_STAGE/usr/lib/x86_64-linux-gnu
+      - __EGL_VENDOR_LIBRARY_DIRS: /var/lib/snapd/lib/glvnd/egl_vendor.d:$CRAFT_STAGE/usr/share/glvnd/egl_vendor.d
+      - LIBGL_DRIVERS_PATH: $CRAFT_STAGE/usr/lib/x86_64-linux-gnu/dri
+    build-packages:
+      - meson
+      - libffmpeg-nvenc-dev
+      - gstreamer1.0-plugins-bad
+      - libva-dev
+      - libegl-dev
+      - libdrm-dev
+
+# meson gstreamer1.0-plugins-bad libffmpeg-nvenc-dev libva-dev libegl-dev
