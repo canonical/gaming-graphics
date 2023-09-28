@@ -2,7 +2,7 @@ name: gaming-graphics-core22
 adopt-info: debs
 summary: Shared Mesa stack for gaming
 description: |
- This snap includes newer versions of Mesa optimized for gaming.
+  This snap includes newer versions of Mesa optimized for gaming.
 confinement: strict
 grade: stable
 base: core22
@@ -64,6 +64,7 @@ parts:
       - libxml2:i386
       - libxml2:amd64
       - libstdc++6
+      - libnvidia-egl-wayland1
     stage:
       - -usr/share/doc
       - -usr/share/man
