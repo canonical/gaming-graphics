@@ -1,4 +1,4 @@
-name: gaming-graphics
+name: gaming-graphics-core24
 adopt-info: debs
 summary: Shared Mesa stack for gaming
 description: |
@@ -13,6 +13,14 @@ slots:
     interface: content
     read:
       - /
+
+lint:
+  ignore:
+    - library:
+        - lib/i386-linux-gnu/**
+        - usr/lib/i386-linux-gnu/**
+        - lib32/**
+        - usr/lib32/**
 
 package-repositories:
   - type: apt
@@ -81,4 +89,4 @@ parts:
     override-prime: |
       craftctl default
       # Set the snap version from the mesa package version
-      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog.gz -S Version | cut -c -32)
+      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog.*.gz -S Version | cut -c -32)
