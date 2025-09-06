@@ -5,7 +5,9 @@ description: |
  This snap includes newer versions of Mesa optimized for gaming.
 confinement: strict
 grade: stable
-base: core22
+base: core24
+platforms:
+  amd64:
 compression: lzo
 
 slots:
