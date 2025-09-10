@@ -3,9 +3,9 @@ on:
   pull_request:
   push:
     branches:
-      - oibaf-latest-core22
-      - kisak-fresh-core22
-      - kisak-turtle-core22
+      - oibaf-latest-core24
+      - kisak-fresh-core24
+      - kisak-turtle-core24
   workflow_dispatch:
 
 jobs:
