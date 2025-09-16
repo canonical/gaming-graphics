@@ -48,6 +48,8 @@ package-repositories:
 parts:
   debs:
     plugin: nil
+    build-packages:
+      - execstack
     stage-packages:
       - libdrm2:i386
       - libdrm2:amd64
@@ -92,3 +94,10 @@ parts:
       craftctl default
       # Set the snap version from the mesa package version
       craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog*gz -S Version | cut -c -32)
+      # Clear execstack
+      for f in usr/lib/*/libvkd3d-shader.so.* usr/lib/*/libvkd3d.so.*; do
+        if [ -f $f ]; then
+          execstack -c $f
+        fi
+      done
+
