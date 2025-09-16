@@ -11,7 +11,7 @@ platforms:
 compression: lzo
 
 slots:
-  gaming-mesa:
+  gaming-graphics-core24:
     interface: content
     read:
       - /
