@@ -48,6 +48,8 @@ package-repositories:
 parts:
   debs:
     plugin: nil
+    build-packages:
+      - execstack
     stage-packages:
       - libglx-mesa0:i386
       - libglx-mesa0:amd64
@@ -87,4 +89,10 @@ parts:
     override-prime: |
       craftctl default
       # Set the snap version from the mesa package version
-      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog.*.gz -S Version | cut -c -32)
+      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog*gz -S Version | cut -c -32)
+      # Clear execstack
+      for f in usr/lib/*/libvkd3d-shader.so.* usr/lib/*/libvkd3d.so.*; do
+        if [ -f $f ]; then
+          execstack -c $f
+        fi
+      done
