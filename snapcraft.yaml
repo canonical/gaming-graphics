@@ -5,7 +5,7 @@ description: |
  This snap includes newer versions of Mesa optimized for gaming.
 confinement: strict
 grade: stable
-base: core24
+base: core26
 platforms:
   amd64:
 compression: lzo
@@ -27,7 +27,7 @@ lint:
 package-repositories:
   - type: apt
     url: http://archive.ubuntu.com/ubuntu/
-    suites: [noble, noble-updates]
+    suites: [resolute, resolute-updates]
     components: [main, universe]
     architectures: [amd64, i386]
     key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
@@ -39,18 +39,20 @@ package-repositories:
 
     # ppa: oibaf/graphics-drivers
     url: http://ppa.launchpad.net/oibaf/graphics-drivers/ubuntu
-    suites: [noble]
+    suites: [resolute]
     components: [main]
     architectures: [amd64, i386]
-    key-id: 5ABCE68FF4633EA42E219156957D2708A03A4626
+    key-id: 97A37C0FB41AF4423282E5B493F4D583494746C8
     key-server: keyserver.ubuntu.com
 
 parts:
   debs:
     plugin: nil
     build-packages:
-      - execstack
+      - patchelf
     stage-packages:
+      - libdrm2:i386
+      - libdrm2:amd64
       - libglx-mesa0:i386
       - libglx-mesa0:amd64
       - libgl1:i386
@@ -58,21 +60,19 @@ parts:
       - libgl1-mesa-dri:i386
       - libgl1-mesa-dri:amd64
       - libvkd3d1:amd64
-      - mesa-va-drivers:amd64
-      - mesa-va-drivers:i386
-      - mesa-vdpau-drivers:amd64
-      - mesa-vdpau-drivers:i386
+      - mesa-libgallium:amd64
+      - mesa-libgallium:i386
       - mesa-vulkan-drivers:amd64
       - mesa-vulkan-drivers:i386
       - va-driver-all:amd64
       - va-driver-all:i386
-      - va-driver:i386
       - libvdpau-va-gl1:amd64
-      - libxml2:i386
-      - libxml2:amd64
       - libdrm-common
       - vulkan-tools # For testing/debugging
       - mesa-utils # For testing/debugging
+      - libxml2-16:i386
+      - libxml2-16:amd64
+      - libstdc++6
     stage:
       - -usr/share/doc
       - -usr/share/man
@@ -89,10 +89,10 @@ parts:
     override-prime: |
       craftctl default
       # Set the snap version from the mesa package version
-      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-va-drivers/changelog*gz -S Version | cut -c -32)
+      craftctl set version=$(dpkg-parsechangelog -l $CRAFT_PART_INSTALL/usr/share/doc/mesa-libgallium/changelog*gz -S Version | cut -c -32)
       # Clear execstack
       for f in usr/lib/*/libvkd3d-shader.so.* usr/lib/*/libvkd3d.so.*; do
         if [ -f $f ]; then
-          execstack -c $f
+          patchelf --clear-execstack $f
         fi
       done
