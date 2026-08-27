@@ -1,4 +1,4 @@
-name: gaming-graphics-core24
+name: gaming-graphics-core26
 adopt-info: debs
 summary: Shared Mesa stack for gaming
 description: |
@@ -11,7 +11,7 @@ platforms:
 compression: lzo
 
 slots:
-  gaming-graphics-core24:
+  gaming-graphics-core26:
     interface: content
     read:
       - /
