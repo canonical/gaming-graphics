@@ -1,0 +1,24 @@
+#!/bin/bash
+# Command chain: point the environment at the gaming-graphics-core26 content.
+set -e
+GFX="$SNAP/graphics"
+LIB="$GFX/usr/lib/$(uname -m)-linux-gnu"
+[ -d "$GFX/usr" ] || { echo "content not mounted at $GFX; plug connected?" >&2; exit 1; }
+
+export PATH="$GFX/usr/bin:$PATH"
+export LD_LIBRARY_PATH="$LIB${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LIBGL_DRIVERS_PATH="$LIB/dri" LIBVA_DRIVERS_PATH="$LIB/dri"
+export __EGL_VENDOR_LIBRARY_DIRS="$GFX/usr/share/glvnd/egl_vendor.d"
+export __GLX_VENDOR_LIBRARY_NAME=mesa
+export DRIRC_CONFIGDIR="$GFX/usr/share/drirc.d"
+
+# Rewrite the path inside the ICD manifests to point to the mounted content snap
+ICD="$SNAP_USER_DATA/icd.d"
+rm -rf "$ICD"; mkdir -p "$ICD"
+for f in "$GFX"/usr/share/vulkan/icd.d/*.json; do
+  sed -E "s#(\"library_path\"[[:space:]]*:[[:space:]]*\")/#\1$GFX/#" "$f" > "$ICD/${f##*/}"
+done
+VK_DRIVER_FILES=$(ls "$ICD"/*.json | paste -sd:)
+export VK_DRIVER_FILES VK_ICD_FILENAMES="$VK_DRIVER_FILES"
+
+exec "$@"

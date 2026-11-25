@@ -1,0 +1,19 @@
+name: gaming-graphics-tester
+version: '0.1'
+summary: Dummy consumer of the gaming-graphics-core26 content snap
+description: Provides a consumer environment to run tests in via `snap run --shell`.
+base: core26
+confinement: strict
+grade: devel
+
+plugs:
+  gaming-graphics-core26:
+    interface: content
+    target: $SNAP/graphics
+    default-provider: gaming-graphics-core26
+
+apps:
+  shell:
+    command: bin/shell
+    command-chain: [bin/env]
+    plugs: [gaming-graphics-core26, opengl, x11, home]

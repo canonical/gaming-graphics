@@ -13,7 +13,6 @@ on:
 jobs:
   snap:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
     steps:
     - uses: actions/checkout@v4
     - uses: snapcore/action-build@v1
@@ -22,5 +21,26 @@ jobs:
       with:
         name: 'snap-${{ github.base_ref || github.ref_name }}'
         path: ${{ steps.snapcraft.outputs.snap }}
-        retention-days: 14
         if-no-files-found: error
+
+  test:
+    needs: snap
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        repository: canonical/gaming-graphics-test-suite
+        path: tests/suite
+    - uses: actions/download-artifact@v4
+      with:
+        name: 'snap-${{ github.base_ref || github.ref_name }}'
+        path: artifact
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y xvfb
+    - name: Set up snaps
+      run: tests/setup.sh artifact/*.snap
+    - name: Run tests
+      run: |
+        export EXPECTED_MESA_VERSION="$(snap list gaming-graphics-core26 | awk 'NR==2 {print $2}')"
+        xvfb-run -a snap run --shell gaming-graphics-tester.shell -c "$PWD/tests/suite/src/run-all.sh"
