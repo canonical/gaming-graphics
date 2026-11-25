@@ -2,7 +2,7 @@ name: gaming-graphics-core26
 adopt-info: debs
 summary: Shared Mesa stack for gaming
 description: |
- This snap includes newer versions of Mesa optimized for gaming.
+  This snap includes newer versions of Mesa optimized for gaming.
 confinement: strict
 grade: stable
 base: core26
@@ -30,27 +30,16 @@ package-repositories:
     url: http://archive.ubuntu.com/ubuntu/
     suites: [resolute, resolute-updates]
     components: [main, universe]
-    architectures: [amd64, i386]
+    architectures: [amd64, i386, arm64]
     key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
     key-server: keyserver.ubuntu.com
+
   - type: apt
     url: http://ports.ubuntu.com/ubuntu-ports/
     suites: [resolute, resolute-updates]
     components: [main, universe]
     architectures: [arm64]
     key-id: F6ECB3762474EDA9D21B7022871920D1991BC93C
-    key-server: keyserver.ubuntu.com
-  - type: apt
-    # FIXME: We need to enable both 32-bit and 64-bit architectures
-    # for this PPA, but Snapcraft doesn't let us do that with the
-    # short syntax. So use the full version instead.
-
-    # ppa: kisak/kisak-mesa
-    url: http://ppa.launchpad.net/kisak/kisak-mesa/ubuntu
-    suites: [resolute]
-    components: [main]
-    architectures: [amd64, i386, arm64]
-    key-id: EB8B81E14DA65431D7504EA8F63F0F2B90935439
     key-server: keyserver.ubuntu.com
 
 parts:
@@ -60,45 +49,45 @@ parts:
       - patchelf
     stage-packages:
       - on amd64:
-        - libdrm2:i386
-        - libdrm2:amd64
-        - libglx-mesa0:i386
-        - libglx-mesa0:amd64
-        - libgl1:i386
-        - libgl1:amd64
-        - libgl1-mesa-dri:i386
-        - libgl1-mesa-dri:amd64
-        - libvkd3d1:amd64
-        - mesa-libgallium:amd64
-        - mesa-libgallium:i386
-        - mesa-vulkan-drivers:amd64
-        - mesa-vulkan-drivers:i386
-        - va-driver-all:amd64
-        - va-driver-all:i386
-        - libvdpau-va-gl1:amd64
-        - libdrm-common
-        - vulkan-tools # For testing/debugging
-        - mesa-utils # For testing/debugging
-        # Only needed in the kisak branches, oibaf picks these up from the PPA
-        - libxml2-16:i386
-        - libxml2-16:amd64
-        - libstdc++6
+          - libdrm2:i386
+          - libdrm2:amd64
+          - libglx-mesa0:i386
+          - libglx-mesa0:amd64
+          - libgl1:i386
+          - libgl1:amd64
+          - libgl1-mesa-dri:i386
+          - libgl1-mesa-dri:amd64
+          - libvkd3d1:amd64
+          - mesa-libgallium:amd64
+          - mesa-libgallium:i386
+          - mesa-vulkan-drivers:amd64
+          - mesa-vulkan-drivers:i386
+          - va-driver-all:amd64
+          - va-driver-all:i386
+          - libvdpau-va-gl1:amd64
+          - libdrm-common
+          - vulkan-tools # For testing/debugging
+          - mesa-utils # For testing/debugging
+          # Only needed in the kisak branches, oibaf picks these up from the PPA
+          - libxml2-16:i386
+          - libxml2-16:amd64
+          - libstdc++6
       - on arm64:
-        - libdrm2
-        - libglx-mesa0
-        - libgl1
-        - libgl1-mesa-dri
-        - libvkd3d1
-        - mesa-libgallium
-        - mesa-vulkan-drivers
-        - va-driver-all
-        - libvdpau-va-gl1
-        - libdrm-common
-        - vulkan-tools # For testing/debugging
-        - mesa-utils # For testing/debugging
-        # Only needed in the kisak branches, oibaf picks these up from the PPA
-        - libxml2-16
-        - libstdc++6
+          - libdrm2
+          - libglx-mesa0
+          - libgl1
+          - libgl1-mesa-dri
+          - libvkd3d1
+          - mesa-libgallium
+          - mesa-vulkan-drivers
+          - va-driver-all
+          - libvdpau-va-gl1
+          - libdrm-common
+          - vulkan-tools # For testing/debugging
+          - mesa-utils # For testing/debugging
+          # Only needed in the kisak branches, oibaf picks these up from the PPA
+          - libxml2-16
+          - libstdc++6
     stage:
       - -usr/share/doc
       - -usr/share/man
