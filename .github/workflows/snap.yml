@@ -42,5 +42,4 @@ jobs:
       run: tests/setup.sh artifact/*.snap
     - name: Run tests
       run: |
-        export EXPECTED_MESA_VERSION="$(snap list gaming-graphics-core26 | awk 'NR==2 {print $2}')"
         xvfb-run -a snap run --shell gaming-graphics-tester.shell -c "$PWD/tests/suite/src/run-all.sh"
