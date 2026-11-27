@@ -1,11 +1,13 @@
-name: snap
+name: snap-build
 on:
   pull_request:
+    paths-ignore:
+      - '**.md'
   push:
     branches:
-      - oibaf-latest-core24
-      - kisak-fresh-core24
-      - kisak-turtle-core24
+      - '*-core[0-9]*'
+    paths-ignore:
+      - '**.md'
   workflow_dispatch:
 
 jobs:
@@ -17,5 +19,6 @@ jobs:
       id: snapcraft
     - uses: actions/upload-artifact@v4
       with:
-        name: 'snap'
-        path: ${{ steps.snapcraft.outputs.snap}}
+        name: 'snap-${{ github.base_ref || github.ref_name }}'
+        path: ${{ steps.snapcraft.outputs.snap }}
+        if-no-files-found: error
