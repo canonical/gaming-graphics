@@ -1,4 +1,4 @@
-name: snap-build
+name: snap-build-and-test
 on:
   pull_request:
     paths-ignore:
@@ -22,3 +22,34 @@ jobs:
         name: 'snap-${{ github.base_ref || github.ref_name }}'
         path: ${{ steps.snapcraft.outputs.snap }}
         if-no-files-found: error
+
+  test:
+    needs: snap
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        repository: canonical/gaming-graphics-test-suite
+        path: tests/suite
+    - uses: actions/download-artifact@v4
+      with:
+        name: 'snap-${{ github.base_ref || github.ref_name }}'
+        path: artifact
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y weston xwayland
+    - name: Start headless compositor (Wayland + Xwayland)
+      run: tests/start-compositor.sh "$RUNNER_TEMP/weston.log"
+    - name: Set up snaps
+      run: tests/setup.sh artifact/*.snap
+    - name: Run tests
+      run: snap run --shell gaming-graphics-tester.shell -c "$PWD/tests/suite/src/run-all.sh"
+    - name: Dump diagnostics
+      if: failure()
+      run: tests/diagnostics.sh "$RUNNER_TEMP/weston.log" 2>&1 | tee "$RUNNER_TEMP/diagnostics.txt"
+    - name: Upload diagnostics
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: diagnostics
+        path: ${{ runner.temp }}/diagnostics.txt
