@@ -14,6 +14,6 @@ sudo snap install --dangerous /tmp/gaming-graphics-tester_0.1_*.snap
 
 # --dangerous installs don't auto-connect.
 sudo snap connect gaming-graphics-tester:gaming-graphics-core26 gaming-graphics-core26:gaming-graphics-core26
-for plug in opengl x11 home; do
+for plug in opengl x11 home steam-support; do
   sudo snap connect "gaming-graphics-tester:$plug"
 done
