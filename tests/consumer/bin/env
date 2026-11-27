@@ -21,4 +21,12 @@ done
 VK_DRIVER_FILES=$(ls "$ICD"/*.json | paste -sd:)
 export VK_DRIVER_FILES VK_ICD_FILENAMES="$VK_DRIVER_FILES"
 
+# snap run sets XDG_RUNTIME_DIR to /run/user/$UID/snap.$SNAP and Wayland clients
+# search for the display socket at $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY and are unable
+# to find it.
+if [ -n "${WAYLAND_DISPLAY:-}" ] && [ -S "$XDG_RUNTIME_DIR/../$WAYLAND_DISPLAY" ]; then
+  mkdir -p "$XDG_RUNTIME_DIR"
+  ln -sf "../$WAYLAND_DISPLAY" "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
+fi
+
 exec "$@"

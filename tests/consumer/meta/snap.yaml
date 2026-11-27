@@ -16,4 +16,4 @@ apps:
   shell:
     command: bin/shell
     command-chain: [bin/env]
-    plugs: [gaming-graphics-core26, opengl, x11, home, steam-support]
+    plugs: [gaming-graphics-core26, opengl, x11, wayland, home, steam-support]
